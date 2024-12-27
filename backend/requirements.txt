@@ -1,4 +1,8 @@
 fastapi
 uvicorn
 pydantic
+openai
+python-dotenv
+pytest
 httpx
+redis
