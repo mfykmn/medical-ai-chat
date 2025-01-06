@@ -19,17 +19,17 @@ router = APIRouter(tags=["Chat"], prefix="/chat")
 async def start():
     '''Chatの開始
     '''
-
-    # completion = openaiClient.chat.completions.create(
-    #     model="gpt-4o-mini",
-    #     store=True,
-    #     messages=[
-    #         {"role": "user", "content": "write a haiku about ai"}
-    #     ]
-    # )
-    # print(completion.choices[0].message)
     
     try :
+        completion = openaiClient.chat.completions.create(
+            model="gpt-4o-mini",
+            store=True,
+            messages=[
+                {"role": "user", "content": "write a haiku about ai"}
+            ]
+        )
+        print(completion.choices[0].message)
+    
         message = anthropicClient.messages.create(
             model="claude-3-5-sonnet-20241022",
             max_tokens=1024,
