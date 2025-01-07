@@ -9,6 +9,10 @@ load_dotenv()
 openaiClient = OpenAI(
     api_key=os.environ.get("OPENAI_API_KEY")
 )
+deepseekClient = OpenAI(
+    api_key=os.environ.get("DEEP_SEEK_API_KEY"),
+    base_url="https://api.deepseek.com"
+)
 anthropicClient = Anthropic(
     api_key=os.environ.get("ANTHROPIC_API_KEY")
 )   
@@ -20,24 +24,32 @@ async def start():
     '''Chatの開始
     '''
     
-    try :
-        completion = openaiClient.chat.completions.create(
-            model="gpt-4o-mini",
-            store=True,
-            messages=[
-                {"role": "user", "content": "write a haiku about ai"}
-            ]
-        )
-        print(completion.choices[0].message)
+    messages = [
+        {"role": "system", "content": "あなたは優秀なアシスタントです。"},
+        {"role": "user", "content": "こんにちは"},
+    ]
     
-        message = anthropicClient.messages.create(
-            model="claude-3-5-sonnet-20241022",
-            max_tokens=1024,
-            messages=[
-                {"role": "user", "content": "Hello, Claude"}
-            ]
+    try :
+        # OpenAIの場合
+        # completion = openaiClient.chat.completions.create(
+        #     model="gpt-4o-mini",
+        #     messages=messages
+        # )
+        # print(completion.choices[0].message)
+        
+        # DeepSeekの場合
+        completion2 = deepseekClient.chat.completions.create(
+            model="deepseek-chat",
+            messages=messages
         )
-        print(message.content)
+        print(completion2.choices[0].message)
+    
+        # Caludeの場合
+        # message = anthropicClient.messages.create(
+        #     model="claude-3-5-sonnet-20241022",
+        #     messages=messages
+        # )
+        # print(message.content)
         return
     except Exception as e:
         print(e)
